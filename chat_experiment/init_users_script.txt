@@ -1,0 +1,5 @@
+.must $user acc --scheme=basic --secret=test:test123 \
+  --fn='Test User' --photo=./test-128.jpg --tags=test,test-user --do-login \
+  --auth=JRWPA --anon=JW \
+  --cred=email:test@example.com
+
