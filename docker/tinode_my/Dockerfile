@@ -48,7 +48,7 @@ ARG SAMPLE_DATA=data.json
 ENV SAMPLE_DATA=$SAMPLE_DATA
 
 # Default country code to use in communication.
-ENV DEFAULT_COUNTRY_CODE=US
+ENV DEFAULT_COUNTRY_CODE=CN
 
 # The MySQL DSN connection.
 ENV MYSQL_DSN='root@tcp(mysql)/tinode'
@@ -138,7 +138,7 @@ ENV ICE_SERVERS_FILE=
 ENV STORE_USE_ADAPTER=$TARGET_DB
 
 # Url path for exposing the server's internal status. E.g. '/status'
-ENV SERVER_STATUS_PATH=''
+ENV SERVER_STATUS_PATH='/status'
 
 # Garbage collection of unfinished account registrations.
 ENV ACC_GC_ENABLED=false
@@ -146,7 +146,7 @@ ENV ACC_GC_ENABLED=false
 # Install root certificates, they are needed for email validator to work
 # with the TLS SMTP servers like Gmail or Mailjet. Also add bash and grep.
 RUN apk update && \
-	apk add --no-cache ca-certificates bash grep
+	apk add --no-cache ca-certificates bash grep libc6-compat
 
 WORKDIR /opt/tinode
 

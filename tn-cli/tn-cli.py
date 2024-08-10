@@ -650,7 +650,7 @@ def upload(id, cmd, args):
             },
             data = {'id': id},
             files = {'file': (cmd.filename, open(cmd.filename, 'rb'))})
-        handle_ctrl(dotdict(json.loads(result.text)['ctrl']))
+        handle_upload_file_ctrl(dotdict(json.loads(result.text)['ctrl']))
 
     except Exception as ex:
         stdoutln("Failed to upload '{0}'".format(cmd.filename), ex)
@@ -1061,7 +1061,22 @@ def handle_ctrl(ctrl):
         tn_globals.WaitingFor = None
 
     topic = " (" + str(ctrl.topic) + ")" if ctrl.topic else ""
-    stdoutln("\r<= " + str(ctrl.code) + " " + ctrl.text + topic)
+    stdoutln("\r<= " + str(ctrl.code) + " " + ctrl.text + topic + " " + str(ctrl.params))
+
+
+def handle_upload_file_ctrl(ctrl):
+    # Run code on command completion
+    url = ctrl.params.get('url', None)
+
+    if tn_globals.WaitingFor and tn_globals.WaitingFor.await_id == ctrl.id:
+        if 'varname' in tn_globals.WaitingFor:
+            tn_globals.Variables[tn_globals.WaitingFor.varname] = ctrl
+        if tn_globals.WaitingFor.failOnError and ctrl.code >= 400:
+            raise Exception(str(ctrl.code) + " " + ctrl.text)
+        tn_globals.WaitingFor = None
+
+    topic = " (" + str(ctrl.topic) + ")" if ctrl.topic else ""
+    stdoutln("\r<= " + str(ctrl.code) + " " + ctrl.text + topic + " url " + url)
 
 
 # The main processing loop: send messages to server, receive responses.
