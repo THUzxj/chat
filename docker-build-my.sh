@@ -1,7 +1,11 @@
 #!/bin/bash
 
-VERSION=0.22.13
+VERSION=0.22.13-2-gbe0da60a
 
-cp releases/${VERSION}/tinode-mysql.linux-amd64.tar.gz docker/tinode_my/
+./build-my.sh
 
-docker build --tag tinode/tinode-mysql:${VERSION} docker/tinode_my --no-cache 
+cp releases/${VERSION}/tinode-mysql.linux-amd64.tar.gz chat_experiment/tinode_my/
+
+docker build --tag tinode/tinode-mysql:${VERSION} chat_experiment/tinode_my --no-cache
+
+docker build --tag tinode/tinode-chatbot:${VERSION} chat_experiment/chatbot

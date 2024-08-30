@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  tinode-srv:
+    image: tinode/tinode-mysql:0.22.13
+    container_name: compose-tinode-srv
+    ports:
+      - "6060:6060"
+      - "16060:16060"
+    networks:
+      - compose-tinode-net
+    environment:
+      EXT_CONFIG: /tinode.conf
+      WAIT_FOR: mysql:3306
+      TARGET_DB: mysql:3306
+    volumes:
+      - ./tinode.conf:/tinode.conf
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  tinode-chatbot:
+    image: tinode/tinode-chatbot:0.22.13-2-gbe0da60a
+    container_name: compose-tinode-chatbot
+    depends_on:
+      - mysql
+      - tinode-srv
+    networks:
+      - compose-tinode-net
+    environment:
+      LOGIN_AS: alice:alice123
+      TINODE_HOST: tinode-srv:16060
+
+  # tinode-chatbot:
+  #   image: welcome_bot
+  #   container_name: compose-tinode-chatbot
+  #   depends_on:
+  #     - mysql
+  #     - tinode-srv
+  #   networks:
+  #     - compose-tinode-net
+
+  mysql:
+    image: mysql:5.7
+    container_name: compose-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - compose-tinode-net
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+networks:
+  compose-tinode-net:
+    driver: bridge

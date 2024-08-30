@@ -416,18 +416,18 @@ def client_message_loop(stream):
                     time.sleep(0.1)
                     # Respond with a witty quote
                     client_post(publish(msg.data.topic, next_quote()))
-                    client_post(publish_image(msg.data.topic,
-                                "image.jpg", "v0/file/s/2v_zH_kGik0.jpeg"))
+                    # client_post(publish_image(msg.data.topic,
+                    #             "image.jpg", "v0/file/s/2v_zH_kGik0.jpeg"))
                     
-                    client_post(publish_video(
-                        msg.data.topic, "video.mp4", "/v0/file/s/j4qgPUPYp7w", 173289))
-                    client_post(publish_video(
-                        msg.data.topic, "video.mp4", "/v0/file/s/vZLg1WrFSso", 0))
-                    client_post(publish_video(
-                        msg.data.topic, "video.mp4", "/v0/file/s/py1UOCmY4F8", 0))
-                    client_post(publish_video_avi(
-                        msg.data.topic, "video.avi", "/v0/file/s/3-Eq2r7GPjM", 0))
-                    client_post(publish_file(msg.data.topic, "file.mp4", "/v0/file/s/j4qgPUPYp7w"))
+                    # client_post(publish_video(
+                    #     msg.data.topic, "video.mp4", "/v0/file/s/j4qgPUPYp7w", 173289))
+                    # client_post(publish_video(
+                    #     msg.data.topic, "video.mp4", "/v0/file/s/vZLg1WrFSso", 0))
+                    # client_post(publish_video(
+                    #     msg.data.topic, "video.mp4", "/v0/file/s/py1UOCmY4F8", 0))
+                    # client_post(publish_video_avi(
+                    #     msg.data.topic, "video.avi", "/v0/file/s/3-Eq2r7GPjM", 0))
+                    # client_post(publish_file(msg.data.topic, "file.mp4", "/v0/file/s/j4qgPUPYp7w"))
 
             elif msg.HasField("pres"):
                 log("presence:", msg.pres.topic, msg.pres.what)
